@@ -1,0 +1,1568 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  version: 0.1.0
+paths:
+  /verifications/ready:
+    get:
+      summary: Ready
+      operationId: ready_verifications_ready_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+  /verifications/healthz:
+    get:
+      summary: Healthcheck
+      operationId: healthcheck_verifications_healthz_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            text/plain:
+              schema:
+                type: string
+  /verifications/v1:
+    post:
+      summary: Create Verification
+      operationId: create_verification_verifications_v1_post
+      parameters:
+        - name: x-konfir-client-id
+          in: header
+          required: true
+          schema:
+            type: string
+            title: X-Konfir-Client-Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateVerificationPayload'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateVerificationResult'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /verifications/v1/{verification_id}:
+    get:
+      summary: Retrieve Verification
+      operationId: retrieve_verification_verifications_v1__verification_id__get
+      parameters:
+        - name: verification_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Verification Id
+        - name: x-konfir-client-id
+          in: header
+          required: true
+          schema:
+            type: string
+            title: X-Konfir-Client-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveVerificationResult'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /verifications/v1/{verification_id}/timeline:
+    get:
+      summary: Retrieve Timeline
+      operationId: retrieve_timeline_verifications_v1__verification_id__timeline_get
+      parameters:
+        - name: verification_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Verification Id
+        - name: x-konfir-client-id
+          in: header
+          required: true
+          schema:
+            type: string
+            title: X-Konfir-Client-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/api__results__v1__retrieve_timeline_result__RetrieveTimelineResult
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /verifications/v1/{verification_id}/pdf:
+    post:
+      summary: Request Pdf
+      operationId: request_pdf_verifications_v1__verification_id__pdf_post
+      parameters:
+        - name: verification_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Verification Id
+        - name: x-konfir-client-id
+          in: header
+          required: true
+          schema:
+            type: string
+            title: X-Konfir-Client-Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequestPdfResult'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /verifications/v1/{verification_id}/activities/{activity_id}/transactions/income:
+    get:
+      summary: Retrieve Income Transactions
+      operationId: >-
+        retrieve_income_transactions_verifications_v1__verification_id__activities__activity_id__transactions_income_get
+      parameters:
+        - name: verification_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Verification Id
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Activity Id
+        - name: counterparty
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+                minLength: 1
+                maxLength: 255
+              - type: 'null'
+            title: Counterparty
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+            title: Page
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            title: Size
+        - name: sort
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+                minLength: 1
+                maxLength: 255
+              - type: 'null'
+            title: Sort
+        - name: x-konfir-client-id
+          in: header
+          required: true
+          schema:
+            type: string
+            title: X-Konfir-Client-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveActivityTransactionsResult'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /verifications/v1/{verification_id}/activities/{activity_id}/transactions/spending:
+    get:
+      summary: Retrieve Spending Transactions
+      operationId: >-
+        retrieve_spending_transactions_verifications_v1__verification_id__activities__activity_id__transactions_spending_get
+      parameters:
+        - name: verification_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Verification Id
+        - name: activity_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Activity Id
+        - name: counterparty
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+                minLength: 1
+                maxLength: 255
+              - type: 'null'
+            title: Counterparty
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 1
+            title: Page
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+            title: Size
+        - name: sort
+          in: query
+          required: false
+          schema:
+            anyOf:
+              - type: string
+                minLength: 1
+                maxLength: 255
+              - type: 'null'
+            title: Sort
+        - name: x-konfir-client-id
+          in: header
+          required: true
+          schema:
+            type: string
+            title: X-Konfir-Client-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveActivityTransactionsResult'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /verifications/v1/test/data/{persona}:
+    post:
+      summary: Create Test Data
+      operationId: create_test_data_verifications_v1_test_data__persona__post
+      parameters:
+        - name: persona
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/Persona'
+        - name: x-konfir-client-id
+          in: header
+          required: true
+          schema:
+            type: string
+            title: X-Konfir-Client-Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+                - $ref: '#/components/schemas/CreateTestPersonaPayload'
+                - type: 'null'
+              title: Payload
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /verifications/v2/{verification_id}/timeline:
+    get:
+      summary: Retrieve Timeline
+      operationId: retrieve_timeline_verifications_v2__verification_id__timeline_get
+      parameters:
+        - name: verification_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+            title: Verification Id
+        - name: x-konfir-client-id
+          in: header
+          required: true
+          schema:
+            type: string
+            title: X-Konfir-Client-Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/api__results__v2__retrieve_timeline_result__RetrieveTimelineResult
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /verifications/tests/exception:
+    get:
+      summary: Boom
+      operationId: boom_verifications_tests_exception_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+components:
+  schemas:
+    ActivityConnectionStatus:
+      type: string
+      enum:
+        - connected
+        - not_connected
+        - not_started
+      title: ActivityConnectionStatus
+    ActivityEducation:
+      properties:
+        type:
+          const: education
+          title: Type
+        isCurrent:
+          type: boolean
+          title: Iscurrent
+        startDate:
+          type: string
+          format: date
+          title: Startdate
+        endDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Enddate
+        verifyViaKonfir:
+          type: boolean
+          title: Verifyviakonfir
+        institution:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Institution
+      type: object
+      required:
+        - type
+        - isCurrent
+        - startDate
+        - verifyViaKonfir
+        - institution
+      title: ActivityEducation
+    ActivityEmployment:
+      properties:
+        type:
+          const: employment
+          title: Type
+        isCurrent:
+          type: boolean
+          title: Iscurrent
+        startDate:
+          type: string
+          format: date
+          title: Startdate
+        endDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Enddate
+        verifyViaKonfir:
+          type: boolean
+          title: Verifyviakonfir
+        employerId:
+          anyOf:
+            - type: string
+              format: uuid
+            - type: 'null'
+          title: Employerid
+        employerName:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Employername
+        jobTitle:
+          anyOf:
+            - type: string
+              maxLength: 255
+              minLength: 1
+            - type: 'null'
+          title: Jobtitle
+      type: object
+      required:
+        - type
+        - isCurrent
+        - startDate
+        - verifyViaKonfir
+        - employerName
+      title: ActivityEmployment
+    ActivityGapInEmployment:
+      properties:
+        type:
+          const: gap_in_employment
+          title: Type
+        isCurrent:
+          type: boolean
+          title: Iscurrent
+        startDate:
+          type: string
+          format: date
+          title: Startdate
+        endDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Enddate
+        verifyViaKonfir:
+          type: boolean
+          title: Verifyviakonfir
+        isReceivingBenefits:
+          anyOf:
+            - type: boolean
+            - type: 'null'
+          title: Isreceivingbenefits
+          default: false
+        description:
+          anyOf:
+            - type: string
+              maxLength: 255
+              minLength: 1
+            - type: 'null'
+          title: Description
+      type: object
+      required:
+        - type
+        - isCurrent
+        - startDate
+        - verifyViaKonfir
+      title: ActivityGapInEmployment
+    ActivityTransactionResult:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        accountProviderName:
+          type: string
+          title: Accountprovidername
+        counterparty:
+          type: string
+          title: Counterparty
+        description:
+          type: string
+          title: Description
+        amount:
+          anyOf:
+            - type: number
+            - type: 'null'
+          title: Amount
+        currencyCode:
+          type: string
+          title: Currencycode
+        date:
+          type: string
+          format: date-time
+          title: Date
+      type: object
+      required:
+        - id
+        - accountProviderName
+        - counterparty
+        - description
+        - amount
+        - currencyCode
+        - date
+      title: ActivityTransactionResult
+    ActivityType:
+      type: string
+      enum:
+        - employment
+        - gap_in_employment
+        - education
+      title: ActivityType
+    Address:
+      properties:
+        city:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: City
+        postCode:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Postcode
+        county:
+          anyOf:
+            - type: string
+              maxLength: 255
+              minLength: 1
+            - type: 'null'
+          title: County
+          default: ''
+        country:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Country
+        houseName:
+          anyOf:
+            - type: string
+              maxLength: 255
+              minLength: 1
+            - type: 'null'
+          title: Housename
+        houseNumber:
+          anyOf:
+            - type: string
+              maxLength: 255
+              minLength: 1
+            - type: 'null'
+          title: Housenumber
+        flat:
+          anyOf:
+            - type: string
+              maxLength: 255
+              minLength: 1
+            - type: 'null'
+          title: Flat
+          default: ''
+        streetName:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Streetname
+        startDate:
+          type: string
+          format: date
+          title: Startdate
+        endDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Enddate
+      type: object
+      required:
+        - city
+        - postCode
+        - country
+        - streetName
+        - startDate
+      title: Address
+    AllowedFont:
+      type: string
+      enum:
+        - Arial
+        - Verdana
+        - Tahoma
+        - Trebuchet MS
+        - Times New Roman
+        - Georgia
+        - Garamond
+        - Courier New
+        - Brush Script MT
+        - Roboto
+        - Roboto Condensed
+        - Roboto Slab
+        - Open Sans
+        - Lato
+        - Montserrat
+        - Raleway
+        - Oswald
+        - Ubuntu
+        - Poppins
+        - Noto Sans
+        - Merriweather
+        - PT Sans
+        - Playfair Display
+        - Quicksand
+        - Nunito
+        - Work Sans
+        - Rubik
+        - Josefin Sans
+        - Red Hat Display
+        - Lexend Deca
+      title: AllowedFont
+    ButtonsPayload:
+      properties:
+        primary:
+          $ref: >-
+            #/components/schemas/api__payloads__meta__candidate_journey_theme_payload__Button
+        secondary:
+          $ref: >-
+            #/components/schemas/api__payloads__meta__candidate_journey_theme_payload__Button
+      type: object
+      required:
+        - primary
+        - secondary
+      title: ButtonsPayload
+    ButtonsResult:
+      properties:
+        primary:
+          $ref: >-
+            #/components/schemas/api__results__v1__meta__candidate_journey_theme_result__Button
+        secondary:
+          $ref: >-
+            #/components/schemas/api__results__v1__meta__candidate_journey_theme_result__Button
+      type: object
+      required:
+        - primary
+        - secondary
+      title: ButtonsResult
+    CandidateJourneyThemeOnboardingPayload:
+      properties:
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+      type: object
+      required:
+        - title
+        - description
+      title: CandidateJourneyThemeOnboardingPayload
+    CandidateJourneyThemeOnboardingResult:
+      properties:
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+      type: object
+      required:
+        - title
+        - description
+      title: CandidateJourneyThemeOnboardingResult
+    CandidateJourneyThemePayload:
+      properties:
+        logoUrl:
+          anyOf:
+            - type: string
+              minLength: 1
+              format: uri
+            - type: 'null'
+          title: Logourl
+        colors:
+          $ref: '#/components/schemas/ColorsPayload'
+        fonts:
+          $ref: '#/components/schemas/FontsPayload'
+        buttons:
+          $ref: '#/components/schemas/ButtonsPayload'
+        onboarding:
+          anyOf:
+            - $ref: '#/components/schemas/CandidateJourneyThemeOnboardingPayload'
+            - type: 'null'
+        verifierOrganisationName:
+          anyOf:
+            - type: string
+              maxLength: 100
+              minLength: 1
+            - type: 'null'
+          title: Verifierorganisationname
+      type: object
+      required:
+        - colors
+        - fonts
+        - buttons
+      title: CandidateJourneyThemePayload
+    CandidateJourneyThemeResult:
+      properties:
+        logoUrl:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Logourl
+        fonts:
+          $ref: '#/components/schemas/FontsResult'
+        colors:
+          $ref: '#/components/schemas/ColorsResult'
+        buttons:
+          $ref: '#/components/schemas/ButtonsResult'
+        onboarding:
+          anyOf:
+            - $ref: '#/components/schemas/CandidateJourneyThemeOnboardingResult'
+            - type: 'null'
+        verifierOrganisationName:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Verifierorganisationname
+      type: object
+      required:
+        - fonts
+        - colors
+        - buttons
+      title: CandidateJourneyThemeResult
+    ColorsPayload:
+      properties:
+        primary:
+          type: string
+          pattern: ^#[A-Fa-f0-9]{6}$
+          title: Primary
+        background:
+          type: string
+          pattern: ^#[A-Fa-f0-9]{6}$
+          title: Background
+        text:
+          type: string
+          pattern: ^#[A-Fa-f0-9]{6}$
+          title: Text
+      type: object
+      required:
+        - primary
+        - background
+        - text
+      title: ColorsPayload
+    ColorsResult:
+      properties:
+        primary:
+          type: string
+          title: Primary
+        background:
+          type: string
+          title: Background
+        text:
+          type: string
+          title: Text
+      type: object
+      required:
+        - primary
+        - background
+        - text
+      title: ColorsResult
+    CreateTestPersonaPayload:
+      properties:
+        data:
+          anyOf:
+            - $ref: '#/components/schemas/CreateTestPersonaPayloadData'
+            - type: 'null'
+      type: object
+      title: CreateTestPersonaPayload
+    CreateTestPersonaPayloadData:
+      properties:
+        webhookUrl:
+          anyOf:
+            - type: string
+              minLength: 1
+              format: uri
+            - type: 'null'
+          title: Webhookurl
+      type: object
+      title: CreateTestPersonaPayloadData
+    CreateVerificationPayload:
+      properties:
+        data:
+          $ref: '#/components/schemas/CreateVerificationPayloadData'
+        meta:
+          $ref: '#/components/schemas/CreateVerificationPayloadMeta'
+      type: object
+      required:
+        - data
+        - meta
+      title: CreateVerificationPayload
+    CreateVerificationPayloadData:
+      properties:
+        firstName:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Firstname
+        middleName:
+          anyOf:
+            - type: string
+              maxLength: 255
+              minLength: 1
+            - type: 'null'
+          title: Middlename
+        lastName:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Lastname
+        phoneNumber:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Phonenumber
+        nationalInsuranceNumber:
+          anyOf:
+            - type: string
+              maxLength: 9
+              minLength: 1
+            - type: 'null'
+          title: Nationalinsurancenumber
+        dateOfBirth:
+          type: string
+          format: date
+          title: Dateofbirth
+        email:
+          anyOf:
+            - type: string
+              format: email
+            - type: 'null'
+          title: Email
+        newEmployerName:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Newemployername
+        newJobTitle:
+          anyOf:
+            - type: string
+              maxLength: 255
+              minLength: 1
+            - type: 'null'
+          title: Newjobtitle
+        consentToContactCurrentEmployer:
+          type: boolean
+          title: Consenttocontactcurrentemployer
+        isSandbox:
+          type: boolean
+          title: Issandbox
+          default: false
+        activities:
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ActivityEmployment'
+              - $ref: '#/components/schemas/ActivityGapInEmployment'
+              - $ref: '#/components/schemas/ActivityEducation'
+            discriminator:
+              propertyName: type
+              mapping:
+                education: '#/components/schemas/ActivityEducation'
+                employment: '#/components/schemas/ActivityEmployment'
+                gap_in_employment: '#/components/schemas/ActivityGapInEmployment'
+          type: array
+          title: Activities
+        addresses:
+          anyOf:
+            - items:
+                $ref: '#/components/schemas/Address'
+              type: array
+            - type: 'null'
+          title: Addresses
+          default: []
+      type: object
+      required:
+        - firstName
+        - lastName
+        - dateOfBirth
+        - newEmployerName
+        - consentToContactCurrentEmployer
+        - activities
+      title: CreateVerificationPayloadData
+    CreateVerificationPayloadMeta:
+      properties:
+        redirectUrl:
+          type: string
+          minLength: 1
+          format: uri
+          title: Redirecturl
+        state:
+          anyOf:
+            - type: string
+              maxLength: 400
+              minLength: 1
+            - type: 'null'
+          title: State
+        webhookUrl:
+          anyOf:
+            - type: string
+              minLength: 1
+              format: uri
+            - type: 'null'
+          title: Webhookurl
+        candidateJourneyTheme:
+          anyOf:
+            - $ref: '#/components/schemas/CandidateJourneyThemePayload'
+            - type: 'null'
+      type: object
+      required:
+        - redirectUrl
+      title: CreateVerificationPayloadMeta
+    CreateVerificationResult:
+      properties:
+        data:
+          $ref: '#/components/schemas/VerificationResult'
+        meta:
+          $ref: '#/components/schemas/CreateVerificationResultMeta'
+      type: object
+      required:
+        - data
+        - meta
+      title: CreateVerificationResult
+    CreateVerificationResultMeta:
+      properties:
+        redirectUrl:
+          type: string
+          title: Redirecturl
+        webhookUrl:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Webhookurl
+        candidateUrl:
+          type: string
+          title: Candidateurl
+        isSandbox:
+          type: boolean
+          title: Issandbox
+        candidateJourneyTheme:
+          anyOf:
+            - $ref: '#/components/schemas/CandidateJourneyThemeResult'
+            - type: 'null'
+      type: object
+      required:
+        - redirectUrl
+        - candidateUrl
+        - isSandbox
+      title: CreateVerificationResultMeta
+    FontsPayload:
+      properties:
+        default:
+          $ref: >-
+            #/components/schemas/api__payloads__meta__candidate_journey_theme_payload__Font
+      type: object
+      required:
+        - default
+      title: FontsPayload
+    FontsResult:
+      properties:
+        default:
+          $ref: >-
+            #/components/schemas/api__results__v1__meta__candidate_journey_theme_result__Font
+      type: object
+      required:
+        - default
+      title: FontsResult
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    Persona:
+      type: string
+      enum:
+        - adalovelace
+        - alberteinstein
+        - mariecurie
+        - nikolatesla
+      title: Persona
+    RequestPdfResult:
+      properties:
+        data:
+          $ref: '#/components/schemas/RequestPdfResultData'
+      type: object
+      required:
+        - data
+      title: RequestPdfResult
+    RequestPdfResultData:
+      properties:
+        url:
+          type: string
+          title: Url
+      type: object
+      required:
+        - url
+      title: RequestPdfResultData
+    RetrieveActivityTransactionsResult:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/ActivityTransactionResult'
+          type: array
+          title: Data
+        meta:
+          type: object
+          title: Meta
+      type: object
+      required:
+        - data
+        - meta
+      title: RetrieveActivityTransactionsResult
+    RetrieveVerificationResult:
+      properties:
+        data:
+          $ref: '#/components/schemas/VerificationResult'
+      type: object
+      required:
+        - data
+      title: RetrieveVerificationResult
+    TimelineActivityAlertsResult:
+      properties:
+        startDateDifferenceInDays:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          title: Startdatedifferenceindays
+        endDateDifferenceInDays:
+          anyOf:
+            - type: integer
+            - type: 'null'
+          title: Enddatedifferenceindays
+      type: object
+      title: TimelineActivityAlertsResult
+    TimelineActivityEmployerResult:
+      properties:
+        id:
+          anyOf:
+            - type: string
+              format: uuid
+            - type: 'null'
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+        - name
+      title: TimelineActivityEmployerResult
+    TimelineActivityEmploymentResult:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        type:
+          const: employment
+          title: Type
+        declared:
+          type: boolean
+          title: Declared
+        verificationStatus:
+          $ref: '#/components/schemas/TimelineActivityVerificationStatus'
+        connectionStatus:
+          $ref: '#/components/schemas/ActivityConnectionStatus'
+        sources:
+          items:
+            $ref: '#/components/schemas/TimelineActivitySourceResult'
+          type: array
+          title: Sources
+        startDate:
+          type: string
+          format: date
+          title: Startdate
+        endDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Enddate
+        fullname:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Fullname
+        nationalInsuranceNumber:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Nationalinsurancenumber
+        alerts:
+          $ref: '#/components/schemas/TimelineActivityAlertsResult'
+        payInfo:
+          $ref: '#/components/schemas/TimelineActivityPayInfoResult'
+        incomeInfo:
+          anyOf:
+            - $ref: '#/components/schemas/TimelineActivityIncomeInfoResult'
+            - type: 'null'
+        jobTitle:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Jobtitle
+        employer:
+          anyOf:
+            - $ref: '#/components/schemas/TimelineActivityEmployerResult'
+            - type: 'null'
+      type: object
+      required:
+        - id
+        - type
+        - declared
+        - verificationStatus
+        - connectionStatus
+        - sources
+        - startDate
+        - alerts
+        - payInfo
+      title: TimelineActivityEmploymentResult
+    TimelineActivityGapInEmploymentResult:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        type:
+          const: gap_in_employment
+          title: Type
+        declared:
+          type: boolean
+          title: Declared
+        verificationStatus:
+          $ref: '#/components/schemas/TimelineActivityVerificationStatus'
+        connectionStatus:
+          $ref: '#/components/schemas/ActivityConnectionStatus'
+        sources:
+          items:
+            $ref: '#/components/schemas/TimelineActivitySourceResult'
+          type: array
+          title: Sources
+        startDate:
+          type: string
+          format: date
+          title: Startdate
+        endDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Enddate
+        fullname:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Fullname
+        nationalInsuranceNumber:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Nationalinsurancenumber
+        alerts:
+          $ref: '#/components/schemas/TimelineActivityAlertsResult'
+        payInfo:
+          $ref: '#/components/schemas/TimelineActivityPayInfoResult'
+        incomeInfo:
+          anyOf:
+            - $ref: '#/components/schemas/TimelineActivityIncomeInfoResult'
+            - type: 'null'
+      type: object
+      required:
+        - id
+        - type
+        - declared
+        - verificationStatus
+        - connectionStatus
+        - sources
+        - startDate
+        - alerts
+        - payInfo
+      title: TimelineActivityGapInEmploymentResult
+    TimelineActivityIncomeInfoResult:
+      properties:
+        payCurrency:
+          type: string
+          title: Paycurrency
+        basePay:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Basepay
+        grossIncomeRolling:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Grossincomerolling
+        netIncomeRolling:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Netincomerolling
+        grossIncomeYtd:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Grossincomeytd
+        netIncomeYtd:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Netincomeytd
+      type: object
+      required:
+        - payCurrency
+      title: TimelineActivityIncomeInfoResult
+    TimelineActivityPayInfoResult:
+      properties:
+        firstPaymentDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Firstpaymentdate
+        lastPaymentDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Lastpaymentdate
+        payFrequency:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Payfrequency
+      type: object
+      title: TimelineActivityPayInfoResult
+    TimelineActivityResult:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        type:
+          $ref: '#/components/schemas/ActivityType'
+        sources:
+          items:
+            $ref: '#/components/schemas/TimelineActivitySourceResult'
+          type: array
+          title: Sources
+        startDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Startdate
+        endDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Enddate
+        firstPaymentDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Firstpaymentdate
+        lastPaymentDate:
+          anyOf:
+            - type: string
+              format: date
+            - type: 'null'
+          title: Lastpaymentdate
+        fullname:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Fullname
+        nationalInsuranceNumber:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Nationalinsurancenumber
+        employerName:
+          type: string
+          title: Employername
+        jobTitle:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Jobtitle
+      type: object
+      required:
+        - id
+        - type
+        - sources
+        - startDate
+        - endDate
+        - firstPaymentDate
+        - lastPaymentDate
+        - fullname
+        - nationalInsuranceNumber
+        - employerName
+        - jobTitle
+      title: TimelineActivityResult
+    TimelineActivitySourceResult:
+      properties:
+        providerId:
+          type: string
+          title: Providerid
+        providerName:
+          type: string
+          title: Providername
+      type: object
+      required:
+        - providerId
+        - providerName
+      title: TimelineActivitySourceResult
+    TimelineActivityVerificationStatus:
+      type: string
+      enum:
+        - not_verified
+        - verified
+      title: TimelineActivityVerificationStatus
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+    VerificationResult:
+      properties:
+        id:
+          type: string
+          title: Id
+        firstName:
+          type: string
+          title: Firstname
+        middleName:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Middlename
+        lastName:
+          type: string
+          title: Lastname
+        phoneNumber:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Phonenumber
+        nationalInsuranceNumber:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Nationalinsurancenumber
+        dateOfBirth:
+          type: string
+          format: date
+          title: Dateofbirth
+        email:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Email
+        newEmployerName:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Newemployername
+        newJobTitle:
+          anyOf:
+            - type: string
+            - type: 'null'
+          title: Newjobtitle
+        consentToContactCurrentEmployer:
+          type: boolean
+          title: Consenttocontactcurrentemployer
+        status:
+          type: string
+          title: Status
+        activities:
+          items: {}
+          type: array
+          title: Activities
+        addresses:
+          items: {}
+          type: array
+          title: Addresses
+      type: object
+      required:
+        - id
+        - firstName
+        - middleName
+        - lastName
+        - phoneNumber
+        - nationalInsuranceNumber
+        - dateOfBirth
+        - email
+        - newEmployerName
+        - newJobTitle
+        - consentToContactCurrentEmployer
+        - status
+        - activities
+        - addresses
+      title: VerificationResult
+    api__payloads__meta__candidate_journey_theme_payload__Button:
+      properties:
+        text:
+          type: string
+          pattern: ^#[A-Fa-f0-9]{6}$
+          title: Text
+      type: object
+      required:
+        - text
+      title: Button
+    api__payloads__meta__candidate_journey_theme_payload__Font:
+      properties:
+        family:
+          $ref: '#/components/schemas/AllowedFont'
+      type: object
+      required:
+        - family
+      title: Font
+    api__results__v1__meta__candidate_journey_theme_result__Button:
+      properties:
+        text:
+          type: string
+          title: Text
+      type: object
+      required:
+        - text
+      title: Button
+    api__results__v1__meta__candidate_journey_theme_result__Font:
+      properties:
+        family:
+          type: string
+          title: Family
+      type: object
+      required:
+        - family
+      title: Font
+    api__results__v1__retrieve_timeline_result__RetrieveTimelineResult:
+      properties:
+        data:
+          $ref: >-
+            #/components/schemas/api__results__v1__timeline_result__TimelineResult
+      type: object
+      required:
+        - data
+      title: RetrieveTimelineResult
+    api__results__v1__timeline_result__TimelineResult:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        verificationId:
+          type: string
+          format: uuid
+          title: Verificationid
+        activities:
+          items:
+            $ref: '#/components/schemas/TimelineActivityResult'
+          type: array
+          title: Activities
+      type: object
+      required:
+        - id
+        - verificationId
+        - activities
+      title: TimelineResult
+    api__results__v2__retrieve_timeline_result__RetrieveTimelineResult:
+      properties:
+        data:
+          $ref: >-
+            #/components/schemas/api__results__v2__retrieve_timeline_result__TimelineResult
+      type: object
+      required:
+        - data
+      title: RetrieveTimelineResult
+    api__results__v2__retrieve_timeline_result__TimelineResult:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        verificationId:
+          type: string
+          format: uuid
+          title: Verificationid
+        activities:
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/TimelineActivityEmploymentResult'
+              - $ref: '#/components/schemas/TimelineActivityGapInEmploymentResult'
+            discriminator:
+              propertyName: type
+              mapping:
+                employment: '#/components/schemas/TimelineActivityEmploymentResult'
+                gap_in_employment: '#/components/schemas/TimelineActivityGapInEmploymentResult'
+          type: array
+          title: Activities
+      type: object
+      required:
+        - id
+        - verificationId
+        - activities
+      title: TimelineResult
+
